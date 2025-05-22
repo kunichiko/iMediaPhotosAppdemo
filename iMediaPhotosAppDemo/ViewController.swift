@@ -122,23 +122,41 @@ extension ViewController : IMBParserControllerDelegate {
 extension ViewController : NSOutlineViewDataSource {
     // ノードが子を持つか？
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-        guard let node = item as? IMBNode else { return false }
-        return (node.subnodes as? [IMBNode])?.isEmpty == false
+        if let node = item as? IMBNode {
+            // subnodesまたは objects のいずれかが非空、または populate されていなければ「展開可能」とみなす
+            let subnodes = node.subnodes as? [IMBNode]
+            let objects = node.objects as? [IMBObject]
+            
+            // populate済みなら中身を見て判断、未populateなら展開可能と仮定
+            if node.isPopulated() {
+                return (subnodes?.isEmpty == false) || (objects?.isEmpty == false)
+            } else {
+                return true // populate前なので展開可能とみなす
+            }
+        }
+        return false
     }
-
+    
     // 子の数
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if let node = item as? IMBNode {
-            return (node.subnodes as? [IMBNode])?.count ?? 0
+            let subnodes = node.subnodes as? [IMBNode] ?? []
+            let objects = node.objects as? [IMBObject] ?? []
+            return subnodes.count + objects.count
         } else {
             return rootNodes.count
         }
     }
-
+    
     // 子ノードを返す
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
         if let node = item as? IMBNode {
-            return (node.subnodes as? [IMBNode])?[index] ?? IMBNode()
+            let subnodes = node.subnodes as? [IMBNode] ?? []
+            if index < subnodes.count {
+                return subnodes[index]
+            }
+            let objects = node.objects as? [IMBObject] ?? []
+            return objects[index - subnodes.count]
         } else {
             return rootNodes[index]
         }
@@ -147,12 +165,66 @@ extension ViewController : NSOutlineViewDataSource {
 
 extension ViewController : NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        guard let node = item as? IMBNode else { return nil }
+        let columnId = tableColumn?.identifier.rawValue ?? ""
 
-        let identifier = NSUserInterfaceItemIdentifier("NodeCell")
-        let cell = outlineView.makeView(withIdentifier: identifier, owner: self) as? NSTableCellView ?? NSTableCellView()
+        if let node = item as? IMBNode {
+            switch columnId {
+            case "NodeColumn":
+                let view = outlineView.makeView(withIdentifier: .init("NodeCell"), owner: self) as? NSTableCellView
+                view?.textField?.stringValue = node.name ?? "(no name)"
+                return view
+            case "CountColumn":
+                let view = outlineView.makeView(withIdentifier: .init("CountCell"), owner: self) as? NSTableCellView
+                if let objects = node.objects as? [IMBObject], !objects.isEmpty {
+                    view?.textField?.stringValue = "\(objects.count) photos"
+                } else if let subnodes = node.subnodes as? [IMBNode] {
+                    view?.textField?.stringValue = "\(subnodes.count) subnodes"
+                } else {
+                    view?.textField?.stringValue = "?"
+                }
+                return view
+            case "IdentifierColumn":
+                let view = outlineView.makeView(withIdentifier: .init("IdentifierCell"), owner: self) as? NSTableCellView
+                view?.textField?.stringValue = node.identifier ?? "-"
+                return view
+            default:
+                return nil
+            }
+        } else if let obj = item as? IMBObject {
+            switch columnId {
+            case "NodeColumn":
+                let view = outlineView.makeView(withIdentifier: .init("NodeCell"), owner: self) as? NSTableCellView
+                view?.textField?.stringValue = obj.name ?? "(photo)"
+                return view
+            case "CountColumn":
+                let view = outlineView.makeView(withIdentifier: .init("CountCell"), owner: self) as? NSTableCellView
+                view?.textField?.stringValue = "—"
+                return view
+            case "IdentifierColumn":
+                let view = outlineView.makeView(withIdentifier: .init("IdentifierCell"), owner: self) as? NSTableCellView
+                view?.textField?.stringValue = obj.identifier ?? "-"
+                return view
+            default:
+                return nil
+            }
+        }
 
-        cell.textField?.stringValue = node.name ?? "(no name)"
-        return cell
+        return nil
+    }
+    
+    func outlineView(_ outlineView: NSOutlineView, shouldExpandItem item: Any) -> Bool {
+        guard let node = item as? IMBNode else { return true }
+
+        // populate されていない場合はここで読み込む
+        if !node.isPopulated() {
+            librarycontroller?.populateNode(node) { (e) in
+                print("⚠️ populate error while expanding: \(String(describing: e))")
+            }
+
+            // 展開対象ノードの subtree をリロード（objects.countを表示させるため）
+            outlineView.reloadItem(node, reloadChildren: true)
+        }
+
+        return true // 展開を許可
     }
 }
