@@ -1,0 +1,16 @@
+//
+//  DevelopmentTeam.xcconfig
+//  iMedia
+//
+//  Created by Kunihiko Ohnaka on 2025/05/22.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
+
+CODE_SIGN_IDENTITY_Debug =
+CODE_SIGN_IDENTITY_Release =
+CODE_SIGN_IDENTITY =
+CODE_SIGNING_REQUIRED = NO
+CODE_SIGNING_ALLOWED = NO
+DEVELOPMENT_TEAM =

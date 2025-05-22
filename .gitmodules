@@ -1,0 +1,3 @@
+[submodule "submodules/iMedia"]
+	path = submodules/iMedia
+	url = https://github.com/danielpunkass/iMedia.git

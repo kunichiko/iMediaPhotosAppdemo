@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import iMedia
 
 class ViewController: NSViewController {
 
@@ -13,6 +14,17 @@ class ViewController: NSViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        print("Hello")
+
+        let libcontroller = iMedia.IMBLibraryController(mediaType: kIMBMediaTypeImage)
+        let topNodes = libcontroller?.topLevelNodesWithoutAccessRights() as? [IMBNode] ?? []
+        printNodeTree(topNodes)
+    }
+    
+    private func printNodeTree(_ nodes: [IMBNode]) {
+        nodes.forEach { node in
+            print("identifier=" + (node.identifier ?? "unknown") + "\n")
+        }
     }
 
     override var representedObject: Any? {

@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		7A892B6E2DDEAE490040C29D /* DevelopmentTeam.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 7A892B6D2DDEAE490040C29D /* DevelopmentTeam.xcconfig */; };
+		7A892B752DDEB7920040C29D /* iMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A892B742DDEB7920040C29D /* iMedia.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		7A892AD72DDEA87E0040C29D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +32,9 @@
 		7A892AC52DDEA87C0040C29D /* iMediaPhotosAppDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iMediaPhotosAppDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A892AD62DDEA87E0040C29D /* iMediaPhotosAppDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iMediaPhotosAppDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A892AE02DDEA87E0040C29D /* iMediaPhotosAppDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iMediaPhotosAppDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A892B6A2DDEADA10040C29D /* iMedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = iMedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A892B6D2DDEAE490040C29D /* DevelopmentTeam.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DevelopmentTeam.xcconfig; sourceTree = "<group>"; };
+		7A892B742DDEB7920040C29D /* iMedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = iMedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -52,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A892B752DDEB7920040C29D /* iMedia.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,9 +84,11 @@
 		7A892ABC2DDEA87C0040C29D = {
 			isa = PBXGroup;
 			children = (
+				7A892B6D2DDEAE490040C29D /* DevelopmentTeam.xcconfig */,
 				7A892AC72DDEA87C0040C29D /* iMediaPhotosAppDemo */,
 				7A892AD92DDEA87E0040C29D /* iMediaPhotosAppDemoTests */,
 				7A892AE32DDEA87E0040C29D /* iMediaPhotosAppDemoUITests */,
+				7A892B692DDEADA10040C29D /* Frameworks */,
 				7A892AC62DDEA87C0040C29D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +101,15 @@
 				7A892AE02DDEA87E0040C29D /* iMediaPhotosAppDemoUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		7A892B692DDEADA10040C29D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7A892B742DDEB7920040C29D /* iMedia.framework */,
+				7A892B6A2DDEADA10040C29D /* iMedia.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,6 +232,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A892B6E2DDEAE490040C29D /* DevelopmentTeam.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
